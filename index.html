@@ -73,8 +73,12 @@
             height: 5px;
             background: var(--ink);
             z-index: 10000;
-            transition: width 0.08s linear;
+            transition: width 0.08s linear, background-color 0.3s ease, left 0.3s ease, transform 0.3s ease, border-radius 0.3s ease;
             border-bottom: 2px solid var(--cream);
+        }
+        .scroll-progress.scrolled {
+            border-radius: 0 0 12px 12px;
+            border-bottom: none;
         }
 
         /* Custom cursor */
@@ -125,15 +129,22 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease, width 0.3s ease, left 0.3s ease, transform 0.3s ease;
             background: transparent;
             gap: 1rem;
         }
         .navbar.scrolled {
-            background: var(--cream);
-            padding: 0.6rem 2rem;
-            box-shadow: 0 4px 0 0 var(--ink);
-            border-bottom: 2px solid var(--ink);
+            background: rgba(255, 248, 231, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 0.45rem 1.2rem;
+            box-shadow: 0 2px 10px rgba(26, 26, 26, 0.05);
+            border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+            border-radius: 0 0 24px 24px;
+            width: 92%;
+            max-width: 1200px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .nav-logo {
             font-family: var(--font-display);
@@ -344,6 +355,11 @@
             }
             .navbar.scrolled {
                 padding: 0.55rem 1rem;
+                width: 100%;
+                left: 0;
+                transform: none;
+                border-radius: 0;
+                background: rgba(255, 248, 231, 0.85);
             }
             .nav-links {
                 display: none;
@@ -789,6 +805,7 @@
         .section {
             padding: 4.5rem 1.5rem;
             position: relative;
+            scroll-margin-top: 100px;
         }
         .section-inner {
             max-width: 1100px;
@@ -1348,7 +1365,7 @@
             }
         }
 
-        /* KLIP Section - yeni bölüm */
+        /* KLIP Section */
         .klip-section {
             background: var(--purple);
             border-bottom: 3px solid var(--ink);
@@ -2101,10 +2118,8 @@
                     localStorage.setItem('uzaylul-lang', lang);
                 } catch (e) { /* yoksay */ }
 
-                // html lang attribute
                 htmlRoot.setAttribute('lang', lang);
 
-                // Update text content for all elements with data-i18n
                 document.querySelectorAll('[data-i18n]').forEach(el => {
                     const key = el.getAttribute('data-i18n');
                     if (translations[lang] && translations[lang][key] !== undefined) {
@@ -2112,7 +2127,6 @@
                     }
                 });
 
-                // Update social links for Instagram and TikTok (ana hesap)
                 const instagramLinks = document.querySelectorAll('[data-social="instagram"]');
                 const tiktokLinks = document.querySelectorAll('[data-social="tiktok"]');
 
@@ -2123,17 +2137,14 @@
                     link.setAttribute('href', translations[lang]['tiktok-link']);
                 });
 
-                // Update language button active states
                 langBtns.forEach(btn => {
                     const btnLang = btn.getAttribute('data-lang');
                     btn.classList.toggle('active', btnLang === lang);
                 });
             }
 
-            // Init language from storage
             setLang(getStoredLang());
 
-            // Language button click handlers
             langBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const targetLang = this.getAttribute('data-lang');
@@ -2143,12 +2154,37 @@
                 });
             });
 
-            // ---------- SCROLL PROGRESS ----------
+            // ---------- SCROLL PROGRESS with color and responsive width ----------
+            function getProgressColor(progress) {
+                if (progress < 20) return '#FF5E1A'; // orange
+                if (progress < 40) return '#FFE600'; // yellow
+                if (progress < 60) return '#3DDC97'; // green
+                if (progress < 80) return '#4D9DE0'; // blue
+                return '#9B5DE5'; // purple
+            }
+
             function updateScrollProgress() {
                 const scrollTop = window.scrollY;
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                 const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-                scrollProgress.style.width = progress + '%';
+
+                const isMobile = window.innerWidth <= 768;
+                const navbarScrolled = navbar.classList.contains('scrolled');
+
+                if (!isMobile && navbarScrolled) {
+                    const navbarWidth = Math.min(1200, window.innerWidth * 0.92);
+                    scrollProgress.style.width = (navbarWidth * progress / 100) + 'px';
+                    scrollProgress.style.left = '50%';
+                    scrollProgress.style.transform = 'translateX(-50%)';
+                    scrollProgress.classList.add('scrolled');
+                } else {
+                    scrollProgress.style.width = progress + '%';
+                    scrollProgress.style.left = '0';
+                    scrollProgress.style.transform = 'none';
+                    scrollProgress.classList.remove('scrolled');
+                }
+
+                scrollProgress.style.backgroundColor = getProgressColor(progress);
             }
 
             function updateNavbar() {
@@ -2159,14 +2195,20 @@
                 }
             }
 
+            // ---------- ACTIVE SECTION ----------
             const sections = ['hero', 'uzaylul', 'mediakit', 'sosyal', 'klip', 'iletisim'];
             function updateActiveSection() {
-                const scrollPos = window.scrollY + 180;
+                const threshold = window.innerHeight * 0.35;
+                const scrollPos = window.scrollY + threshold;
                 let activeId = 'hero';
                 sections.forEach(id => {
                     const el = document.getElementById(id);
-                    if (el && el.offsetTop <= scrollPos) {
-                        activeId = id;
+                    if (el) {
+                        const rect = el.getBoundingClientRect();
+                        const sectionTop = rect.top + window.scrollY;
+                        if (sectionTop <= scrollPos) {
+                            activeId = id;
+                        }
                     }
                 });
                 navLinks.forEach(link => {
@@ -2267,16 +2309,22 @@
                 obs.observe(item);
             });
 
-            // ---------- SCROLL EVENT ----------
+            // ---------- SCROLL EVENT (order: navbar first, then progress, then active section) ----------
             window.addEventListener('scroll', function() {
-                updateScrollProgress();
                 updateNavbar();
+                updateScrollProgress();
                 updateActiveSection();
             }, { passive: true });
 
-            updateScrollProgress();
+            // Initial calls
             updateNavbar();
+            updateScrollProgress();
             updateActiveSection();
+
+            // Also handle resize to recalculate progress width on breakpoint change
+            window.addEventListener('resize', function() {
+                updateScrollProgress();
+            });
 
             // ---------- ESC KEY ----------
             document.addEventListener('keydown', function(e) {
