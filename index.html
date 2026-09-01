@@ -234,6 +234,29 @@
             background: var(--yellow);
         }
 
+        /* Navbar hero üzerindeyken (scrolled değilken) beyaz metin */
+        .navbar:not(.scrolled) .nav-logo {
+            color: #fff;
+        }
+        .navbar:not(.scrolled) .nav-links a {
+            color: #fff;
+        }
+        .navbar:not(.scrolled) .nav-links a:hover,
+        .navbar:not(.scrolled) .nav-links a.active {
+            color: var(--ink);
+            background: var(--yellow);
+        }
+        .navbar:not(.scrolled) .hamburger span {
+            background: #fff;
+        }
+        .navbar:not(.scrolled) .hamburger {
+            background: transparent;
+            border-color: #fff;
+        }
+        .navbar:not(.scrolled) .hamburger:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         /* Language Switcher */
         .lang-switcher {
             display: flex;
