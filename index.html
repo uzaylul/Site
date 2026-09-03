@@ -426,7 +426,8 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
-            pointer-events: none; /* tıklamaları engelleme */
+            pointer-events: none;
+            /* tıklamaları engelleme */
         }
 
         /* Koyu overlay */
@@ -1191,6 +1192,133 @@
             }
         }
 
+        /* COLLABORATIONS SECTION - YENİ */
+        .collab-section {
+            background: #F0F4F8;
+            border-bottom: 3px solid var(--ink);
+            position: relative;
+            overflow: hidden;
+        }
+        .collab-section::before {
+            content: 'PARTNER';
+            position: absolute;
+            top: 2rem;
+            right: -1rem;
+            font-family: var(--font-display);
+            font-size: 7rem;
+            font-weight: 900;
+            color: rgba(77, 157, 224, 0.1);
+            pointer-events: none;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            z-index: 0;
+            user-select: none;
+        }
+        .collab-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .collab-header .section-title {
+            color: var(--ink);
+        }
+        .collab-subtitle {
+            color: var(--ink);
+            font-size: 0.95rem;
+            max-width: 520px;
+            margin: 0 auto;
+            letter-spacing: 0.01em;
+            font-weight: 500;
+            font-family: var(--font-mono);
+        }
+        .collab-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .collab-card {
+            background: var(--white);
+            border: var(--border-hard);
+            border-radius: var(--radius-hard);
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            padding: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-hard-sm);
+            transition: transform 0.25s var(--ease-hard), box-shadow 0.25s var(--ease-hard);
+            cursor: default;
+            position: relative;
+        }
+        .collab-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--ink);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .collab-card:nth-child(1)::after {
+            background: var(--orange);
+        }
+        .collab-card:nth-child(2)::after {
+            background: var(--blue);
+        }
+        .collab-card:nth-child(3)::after {
+            background: var(--pink);
+        }
+        .collab-card:nth-child(4)::after {
+            background: var(--green);
+        }
+        .collab-card:hover::after {
+            opacity: 1;
+        }
+        .collab-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.4s var(--ease-hard);
+        }
+        .collab-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 6px 6px 0 0 var(--ink);
+        }
+        .collab-card:hover img {
+            transform: scale(1.06);
+        }
+        @media (max-width: 768px) {
+            .collab-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.9rem;
+            }
+            .collab-card {
+                padding: 1.2rem;
+            }
+            .collab-section::before {
+                font-size: 3.5rem;
+                top: 1rem;
+                right: 0;
+            }
+        }
+        @media (max-width: 480px) {
+            .collab-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            .collab-card {
+                aspect-ratio: 4/3;
+                padding: 1rem;
+            }
+        }
+
         /* Social Section */
         .social-section {
             background: var(--white);
@@ -1736,6 +1864,7 @@
             <li><a href="#uzaylul" data-nav data-i18n="nav-uzaylul">uzaylul</a></li>
             <li><a href="#smp" data-nav data-i18n="nav-smp">SMP</a></li>
             <li><a href="#mediakit" data-nav data-i18n="nav-mediakit">Media Kit</a></li>
+            <li><a href="#isbirlikleri" data-nav data-i18n="nav-isbirlikleri">İş Birlikleri</a></li>
             <li><a href="#sosyal" data-nav data-i18n="nav-sosyal">Sosyal</a></li>
             <li><a href="#klip" data-nav data-i18n="nav-klip">Klip</a></li>
             <li><a href="#iletisim" data-nav data-i18n="nav-iletisim">İletişim</a></li>
@@ -1758,6 +1887,7 @@
         <a href="#uzaylul" role="menuitem" data-i18n="nav-uzaylul">uzaylul</a>
         <a href="#smp" role="menuitem" data-i18n="nav-smp">SMP</a>
         <a href="#mediakit" role="menuitem" data-i18n="nav-mediakit">Media Kit</a>
+        <a href="#isbirlikleri" role="menuitem" data-i18n="nav-isbirlikleri">İş Birlikleri</a>
         <a href="#sosyal" role="menuitem" data-i18n="nav-sosyal">Sosyal</a>
         <a href="#klip" role="menuitem" data-i18n="nav-klip">Klip</a>
         <a href="#iletisim" role="menuitem" data-i18n="nav-iletisim">İletişim</a>
@@ -1884,6 +2014,31 @@
         </div>
     </section>
 
+    <!-- COLLABORATIONS SECTION (YENİ) -->
+    <section class="section collab-section" id="isbirlikleri" aria-label="Resmi iş birlikleri">
+        <div class="section-inner">
+            <div class="collab-header reveal">
+                <p class="section-label" data-i18n="collab-label">Resmi İş Birlikleri</p>
+                <h2 class="section-title" data-i18n="collab-title">Birlikte Çalıştığımız Markalar</h2>
+                <p class="collab-subtitle" data-i18n="collab-subtitle">Resmi olarak iş birliği yaptığımız şirketler.</p>
+            </div>
+            <div class="collab-grid">
+                <div class="collab-card reveal">
+                    <img src="lul (19).jpg" alt="İş birliği ortağı logo 1" loading="lazy">
+                </div>
+                <div class="collab-card reveal">
+                    <img src="lul (20).jpg" alt="İş birliği ortağı logo 2" loading="lazy">
+                </div>
+                <div class="collab-card reveal">
+                    <img src="lul (21).jpg" alt="İş birliği ortağı logo 3" loading="lazy">
+                </div>
+                <div class="collab-card reveal">
+                    <img src="lul (22).jpg" alt="İş birliği ortağı logo 4" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- SOCIAL MEDIA SECTION -->
     <section class="section social-section" id="sosyal" aria-label="Sosyal medya">
         <div class="section-inner">
@@ -1998,6 +2153,7 @@
                     'nav-uzaylul': 'uzaylul',
                     'nav-smp': 'SMP',
                     'nav-mediakit': 'Media Kit',
+                    'nav-isbirlikleri': 'İş Birlikleri',
                     'nav-sosyal': 'Sosyal',
                     'nav-klip': 'Klip',
                     'nav-iletisim': 'İletişim',
@@ -2018,6 +2174,9 @@
                     'stat-likes': 'Beğeni',
                     'mediakit-contact': 'İletişim için:',
                     'mediakit-cta': 'İş Birliği Teklifi',
+                    'collab-label': 'Resmi İş Birlikleri',
+                    'collab-title': 'Birlikte Çalıştığımız Markalar',
+                    'collab-subtitle': 'Resmi olarak iş birliği yaptığımız şirketler.',
                     'social-label': 'Sosyal Medya',
                     'social-title': "uzaylul'u takip et",
                     'klip-label': 'Klip Kanalı',
@@ -2034,6 +2193,7 @@
                     'nav-uzaylul': 'uzaylul',
                     'nav-smp': 'SMP',
                     'nav-mediakit': 'Media Kit',
+                    'nav-isbirlikleri': 'Partners',
                     'nav-sosyal': 'Social',
                     'nav-klip': 'Clips',
                     'nav-iletisim': 'Contact',
@@ -2054,6 +2214,9 @@
                     'stat-likes': 'Likes',
                     'mediakit-contact': 'Contact:',
                     'mediakit-cta': 'Business Inquiry',
+                    'collab-label': 'Official Collaborations',
+                    'collab-title': 'Brands We Work With',
+                    'collab-subtitle': 'Companies we officially collaborate with.',
                     'social-label': 'Social Media',
                     'social-title': 'Follow uzaylul',
                     'klip-label': 'Clip Channel',
@@ -2179,7 +2342,7 @@
             }
 
             // ---------- ACTIVE SECTION ----------
-            const sections = ['hero', 'uzaylul', 'smp', 'mediakit', 'sosyal', 'klip', 'iletisim'];
+            const sections = ['hero', 'uzaylul', 'smp', 'mediakit', 'isbirlikleri', 'sosyal', 'klip', 'iletisim'];
             function updateActiveSection() {
                 const threshold = window.innerHeight * 0.35;
                 const scrollPos = window.scrollY + threshold;
@@ -2225,7 +2388,7 @@
                     cursorRing.style.top = e.clientY + 'px';
                 });
                 document.addEventListener('mouseover', function(e) {
-                    if (e.target.closest('a, button, .social-card, .stat-item, .mediakit-visual-card, .footer-gallery-item, .lang-btn, .smp-info-card')) {
+                    if (e.target.closest('a, button, .social-card, .stat-item, .mediakit-visual-card, .footer-gallery-item, .lang-btn, .smp-info-card, .collab-card')) {
                         cursorRing.classList.add('hovered');
                     } else {
                         cursorRing.classList.remove('hovered');
